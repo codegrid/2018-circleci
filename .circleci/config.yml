@@ -5,4 +5,7 @@ jobs:
       - image: circleci/node:10
     working_directory: ~/codegrid
     steps:
-      - run: pwd
+      - run: mkdir test-dir
+      - run:
+           command: pwd
+           working_directory: test-dir
