@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  www:
     docker:
       - image: circleci/node:10
     steps:
@@ -8,6 +8,18 @@ jobs:
       - run: cd www && npm ci
       - run: cd www && npm run build
       - run: cd www && npm test
+
+  app:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
       - run: cd app && npm ci
       - run: cd app && npm run build
       - run: cd app && npm test
+
+workflows:
+  www_and_app:
+    jobs:
+      - www
+      - app
