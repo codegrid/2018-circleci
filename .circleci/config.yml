@@ -1,23 +1,39 @@
 version: 2.1
 jobs:
-  test:
+  setup:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: npm ci
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./*
+
+  test:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: .
       - run: npm test
 
   build:
     docker:
       - image: circleci/node:10
     steps:
-      - checkout
-      - run: npm ci
+      - attach_workspace:
+          at: ~/project
       - run: npm run build
 
 workflows:
   app:
     jobs:
-      - test
-      - build
+      - setup
+      - test:
+          requires:
+            - setup
+      - build:
+          requires:
+            - setup
