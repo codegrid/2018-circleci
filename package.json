@@ -1,0 +1,13 @@
+{
+  "name": "2018-circleci",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo build",
+    "test": "exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
