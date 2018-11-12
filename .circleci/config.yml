@@ -1,7 +1,13 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
       - image: circleci/node:10
     steps:
-      - run: echo "hello world"
+      - checkout
+      - run: cd www && npm ci
+      - run: cd www && npm run build
+      - run: cd www && npm test
+      - run: cd app && npm ci
+      - run: cd app && npm run build
+      - run: cd app && npm test
