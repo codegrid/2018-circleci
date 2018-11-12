@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "echo build",
+    "build": "ls -la",
     "test": "exit 0"
   },
   "keywords": [],
