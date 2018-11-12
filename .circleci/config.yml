@@ -13,8 +13,8 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
-      - run:  npm ci
-      - run:  npm run build
+      - run: npm ci
+      - run: npm run build
 
 workflows:
   app:
