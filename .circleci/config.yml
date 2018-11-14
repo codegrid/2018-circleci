@@ -33,8 +33,7 @@ jobs:
       - attach_workspace:
           at: .
       - restore_cache:
-          keys:
-            - node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm test
 
   build:
