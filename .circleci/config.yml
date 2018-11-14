@@ -5,11 +5,26 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - npm-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - npm-cache-{{ .Branch }}-
+            - npm-cache-
       - run: npm ci
+      - save_cache:
+          key: npm-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+      - save_cache:
+          key: node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
       - persist_to_workspace:
           root: .
           paths:
-            - ./*
+            - package.json
+            - package-lock.json
+            - src/*
 
   test:
     docker:
@@ -17,6 +32,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - restore_cache:
+          keys:
+            - node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm test
 
   build:
@@ -24,7 +42,10 @@ jobs:
       - image: circleci/node:10
     steps:
       - attach_workspace:
-          at: ~/project
+          at: .
+      - restore_cache:
+          keys:
+            - node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm run build
 
 workflows:
