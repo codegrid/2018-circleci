@@ -1,7 +1,36 @@
-version: 2
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@1.0.2
 jobs:
   build:
     docker:
       - image: circleci/node:10
     steps:
-      - run: echo "hello world"
+      - checkout
+      - run: cp -r src dist
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist/*
+  deploy:
+    docker:
+      - image: 'circleci/python:2.7'
+    steps:
+      - attach_workspace:
+          at: .
+      - aws-s3/sync:
+          from: dist
+          to: 's3://codegrid-circleci-example'
+          overwrite: true
+workflows:
+  deploy_sample:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - 5/deploy
