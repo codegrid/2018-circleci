@@ -4,6 +4,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "jest-junit": "^6.0.1"
   }
 }
