@@ -1,38 +1,11 @@
 version: 2.1
-orbs:
-  aws-s3: circleci/aws-s3@1.0.2
 jobs:
   build:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
-      - run: cp -r src dist
-      - persist_to_workspace:
-          root: .
-          paths:
-            - dist/*
-  deploy:
-    docker:
-      - image: 'circleci/python:2.7'
-    environment:
-      - AWS_REGION: ap-northeast-1
-    steps:
-      - attach_workspace:
-          at: .
-      - aws-s3/sync:
-          from: dist
-          to: 's3://codegrid-circleci-example'
-          overwrite: true
-workflows:
-  deploy_sample:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - master
-                - 5/deploy
+      - run: npm run build
+      - run: zip -r dist.zip dist
+      - store_artifacts:
+          path: dist.zip

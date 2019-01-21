@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "cp -r src dist"
+  },
+  "private": true
+}
