@@ -6,9 +6,8 @@ jobs:
     steps:
       - checkout
       - run: npm ci
-      - run: npm test
       - run:
-          name: jest-junit
+          name: Testing with Jest
           command: npx jest --ci --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/results.xml
